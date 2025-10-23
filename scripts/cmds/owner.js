@@ -1,102 +1,121 @@
-const fs = require("fs").promises;
-const fssync = require("fs");
-const path = require("path");
-const axios = require("axios");
-const moment = require("moment-timezone");
+// Owner info command (stable video attach)
+// Author: Azad
+
+const { GoatWrapper } = require('fca-liane-utils');
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
   config: {
     name: "owner",
-    version: "1.2",
-    author: "Raihan | Azad 💥",
-    category: "owner",
-    guide: {
-      en: "Use !owner or type Hinata Admin to view owner info."
-    }
+    aliases: ["info"],
+    author: "Azad",
+    role: 0,
+    shortDescription: "Owner info",
+    longDescription: "Stylish owner information with reliable video handling",
+    category: "info",
+    guide: "{pn}"
   },
 
   onStart: async function ({ api, event }) {
-    // Ensure only one owner message per thread
-    if (!this.sentThreads) this.sentThreads = {};
-    if (this.sentThreads[event.threadID]) return;
-    this.sentThreads[event.threadID] = true;
+    // -------- Owner text --------
+    const ownerInfo = {
+      name: '✨ •𝙗α𝘆ě𝓳ı𝐝💕🐝• ✨',
+      class: '📚 🙄😳',
+      group: '👥 😥',
+      gender: '🚹 𝑴𝑨𝑳𝑬',
+      birthday: '🎂 25-10-2010',
+      religion: '☪️ 𝑰𝑺𝑳𝑨𝑴',
+      hobby: '🎯 NOTHING 😪',
+      fb: 'https://www.ffaccom/UNKNOWN.Roster1',
+      relationship: '💔 𝑺𝑰𝑵𝑮𝑳𝑬 🌚',
+      height: '📏 jani na 😴🗿'
+    };
 
-    const ownerInfo = {  
-      name: "Tʌɱɩɱ Hʌwɭʌdeʀ",  
-      gender: "𝙼𝚊𝚕𝚎",  
-      bio: " 🌷",  
-      nick: "Tʌɱɩɱ",  
-      hobby: "gaming",  
-      from: "Dhaka,Bangladesh",  
-      age: "–",  
-      status: "Student"  
-    };  
+    const response =
+`💫 ━━━━『 𝐎𝐖𝐍𝐄𝐑 𝐈𝐍𝐅𝐎 』━━━━ 💫
 
-    const sec = process.uptime();  
-    const botUptime = `${Math.floor(sec / 86400)}d ${Math.floor(sec % 86400 / 3600)}h ${Math.floor(sec % 3600 / 60)}m`;  
-    const now = moment().tz("Asia/Dhaka").format("h:mm A • dddd");  
+🔹 𝗡𝗔𝗠𝗘: ${ownerInfo.name}
+🔹 𝗖𝗟𝗔𝗦𝗦: ${ownerInfo.class}
+🔹 𝗚𝗥𝗢𝗨𝗣: ${ownerInfo.group}
+🔹 𝗚𝗘𝗡𝗗𝗘𝗥: ${ownerInfo.gender}
+🔹 𝗕𝗜𝗥𝗧𝗛𝗗𝗔𝗬: ${ownerInfo.birthday}
+🔹 𝗥𝗘𝗟𝗜𝗚𝗜𝗢𝗡: ${ownerInfo.religion}
+🔹 𝗥𝗘𝗟𝗔𝗧𝗜𝗢𝗡𝗦𝗛𝗜𝗣: ${ownerInfo.relationship}
+🔹 𝗛𝗢𝗕𝗕𝗬: ${ownerInfo.hobby}
+🔹 𝗛𝗘𝗜𝗚𝗛𝗧: ${ownerInfo.height}
+🔹 𝗙𝗕: ${ownerInfo.fb}
 
-    const body = `
+✨ Bot made with 💖 by bayejid ✨`;
+    // -------- Video handling (safe-first) --------
+    const ASSETS_DIR = path.join(__dirname, 'assets');
+    const CACHE_DIR  = path.join(__dirname, 'cache');
+    const LOCAL_VIDEO = path.join(ASSETS_DIR, 'owner.mp4');   // <-- এখানে নিজের ভিডিও রাখো
+    const TEMP_VIDEO  = path.join(CACHE_DIR, 'owner_video.mp4');
 
-🌸┌───────────────┐🌸
-𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢
-🌸└───────────────┘🌸
+    // চাইলে একটি ব্যাকআপ URL রাখলাম; না লাগলেও সমস্যা নেই
+    const FALLBACK_URL = 'https://files.catbox.moe/7xk7i5.mp4'; // উদাহরণ; কাজ না করলে শুধু টেক্সট যাবে
 
-✧ Name ➝ ${ownerInfo.name}
-✧ Gender ➝ ${ownerInfo.gender}
-✧ From ➝ ${ownerInfo.from}
-✧ Age ➝ ${ownerInfo.age}
-✧ Hobby ➝ ${ownerInfo.hobby}
-✧ Status ➝ ${ownerInfo.status}
+    // Ensure cache dir
+    try { if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR); } catch {}
 
-━━━━━━━━━━━━━━
+    const sendWithAttachment = (filePath) => {
+      return new Promise((resolve) => {
+        api.sendMessage({
+          body: response,
+          attachment: fs.createReadStream(filePath)
+        }, event.threadID, (err) => {
+          resolve(!err);
+        });
+      });
+    };
 
-✦ Bot Name ➝ ${ownerInfo.bio}
-✦ Admin ➝ ${ownerInfo.nick}
+    const sendTextOnly = () => {
+      return new Promise((resolve) => {
+        api.sendMessage({ body: response }, event.threadID, (err) => {
+          resolve(!err);
+        });
+      });
+    };
 
-━━━━━━━━━━━━━━
+    // ডাউনলোড হেল্পার (প্রয়োজনে)
+    const downloadWithTimeout = async (url, outPath, timeoutMs = 10000) => {
+      const res = await axios.get(url, { responseType: 'arraybuffer', timeout: timeoutMs, maxContentLength: 25 * 1024 * 1024 });
+      fs.writeFileSync(outPath, Buffer.from(res.data));
+      return outPath;
+    };
 
-✨ Uptime ➝ ${botUptime}
-✨ Time ➝ ${now}
+    try {
+      let sent = false;
 
-📝 Any problem? Talk to admin.
-`;
+      if (fs.existsSync(LOCAL_VIDEO)) {
+        // লোকাল ভিডিও থাকলে সেটাই পাঠাও (সবচেয়ে সেফ)
+        sent = await sendWithAttachment(LOCAL_VIDEO);
+      } else {
+        // লোকাল না থাকলে—শুধু তখনই ব্যাকআপ লিংক ট্রাই করো
+        try {
+          await downloadWithTimeout(FALLBACK_URL, TEMP_VIDEO, 10000);
+          sent = await sendWithAttachment(TEMP_VIDEO);
+        } catch (e) {
+          // ব্যাকআপও ফেল করলে টেক্সট-অনলি
+          sent = await sendTextOnly();
+        } finally {
+          // টেম্প ফাইল থাকলে মুছে দাও
+          try { if (fs.existsSync(TEMP_VIDEO)) fs.unlinkSync(TEMP_VIDEO); } catch {}
+        }
+      }
 
-    // Image URL  
-    const imageUrl = "https://files.catbox.moe/12n172.jpg";  
-    const imagePath = path.join(__dirname, "cache", "owner.jpg");  
-
-    try {  
-      // Download image  
-      const response = await axios.get(imageUrl, { responseType: "stream" });  
-      const writer = response.data.pipe(fssync.createWriteStream(imagePath));  
-      await new Promise((resolve, reject) => {  
-        writer.on("finish", resolve);  
-        writer.on("error", reject);  
-      });  
-
-      const msg = await api.sendMessage({  
-        body,  
-        attachment: fssync.createReadStream(imagePath)  
-      }, event.threadID);  
-
-      this.lastOwnerMsgID = msg.messageID;  
-      await fs.unlink(imagePath);  
-
-    } catch (e) {  
-      console.error("Error sending owner image:", e);  
-      const msg = await api.sendMessage(body, event.threadID);  
-      this.lastOwnerMsgID = msg.messageID;  
-    }
-
-  },
-
-  onChat: async function ({ api, event }) {
-    if (!event.body) return;
-    const msg = event.body.toLowerCase().trim();
-
-    if (msg === "!owner" || msg === "hinata admin") {  
-      await this.onStart({ api, event });  
+      // রিঅ্যাকশন
+      if (sent) {
+        api.setMessageReaction('💖', event.messageID, () => {}, true);
+      }
+    } catch (err) {
+      // যাই হোক, ফাইনাল ফোলব্যাক—টেক্সট পাঠাও; কোনো স্ট্যাক ট্রেস দেখাবে না ইউজারকে
+      await sendTextOnly();
     }
   }
 };
+
+const wrapper = new GoatWrapper(module.exports);
+wrapper.applyNoPrefix({ allowPrefix: true });
