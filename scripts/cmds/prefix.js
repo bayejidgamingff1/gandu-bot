@@ -4,7 +4,7 @@ module.exports = {
 	config: {
 		name: "prefix",
 		version: "1.3",
-		author: "NTKhang",
+		author: "BAYEJID",
 		countDown: 5,
 		role: 0,
 		shortDescription: "Change the prefix of the bot",
@@ -23,13 +23,13 @@ module.exports = {
 
 	langs: {
 		en: {
-			reset: "🦋𝙼𝚊𝚔𝚒𝚖𝚊 prefix has been reset to default: %1",
+			reset: "Sɪᴊᴜᴋᴀ⚡🖤 prefix has been reset to default: %1",
 			onlyAdmin: "Sorry, only admin can change the prefix of the system.",
-			confirmGlobal: "React to this message to confirm changing 🦋𝙼𝚊𝚔𝚒𝚖𝚊's global prefix.",
-			confirmThisThread: "React to this message to confirm changing 🦋𝙼𝚊𝚔𝚒𝚖𝚊's prefix in your chat box.",
-			successGlobal: "Changed the prefix of 🦋𝙼𝚊𝚔𝚒𝚖𝚊's global system to: %1",
-			successThisThread: "Changed 🦋𝙼𝚊𝚔𝚒𝚖𝚊's prefix in your chat box to: %1",
-			myPrefix: "𝑯𝒆𝒍𝒍𝒐, 𝑴𝒚 𝒏𝒂𝒎𝒆 𝒊𝒔 : 🦋𝙼𝚊𝚔𝚒𝚖𝚊🍓\n𝑯𝒆𝒓𝒆'𝒔 𝒎𝒚 𝑷𝒓𝒆𝒇𝒊𝒙 :\n🦋𝙼𝚊𝚔𝚒𝚖𝚊'𝒔 𝑷𝒓𝒆𝒇𝒊𝒙 𝑺𝒚𝒔𝒕𝒆𝒎 : %1\n🦋𝙼𝚊𝚔𝚒𝚖𝚊'𝒔 𝑷𝒓𝒆𝒇𝒊𝒙 𝒊𝒔 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒃𝒐𝒙 : %2"
+			confirmGlobal: "React to this message to confirm changing Sɪᴊᴜᴋᴀ⚡🖤's global prefix.",
+			confirmThisThread: "React to this message to confirm changing Sɪᴊᴜᴋᴀ⚡🖤's prefix in your chat box.",
+			successGlobal: "Changed the prefix of Sɪᴊᴜᴋᴀ⚡🖤's global system to: %1",
+			successThisThread: "Changed Sɪᴊᴜᴋᴀ⚡🖤's prefix in your chat box to: %1",
+			myPrefix: "𝑯𝒆𝒍𝒍𝒐, 𝑴𝒚 𝒏𝒂𝒎𝒆 𝒊𝒔 : Sɪᴊᴜᴋᴀ⚡🖤\n𝑯𝒆𝒓𝒆'𝒔 𝒎𝒚 𝑷𝒓𝒆𝒇𝒊𝒙 :\nSɪᴊᴜᴋᴀ⚡🖤'𝒔 𝑷𝒓𝒆𝒇𝒊𝒙 𝑺𝒚𝒔𝒕𝒆𝒎 : %1\nSɪᴊᴜᴋᴀ⚡🖤'𝒔 𝑷𝒓𝒆𝒇𝒊𝒙 𝒊𝒔 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒃𝒐𝒙 : %2"
 		}
 	},
 
