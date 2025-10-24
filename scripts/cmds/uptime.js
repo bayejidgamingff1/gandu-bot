@@ -66,7 +66,7 @@ module.exports = {
     const infoTexts = [
       `⏳ Uptime: ${uptimeStr}`,
       `📶 Ping: ${ping} ms`,
-      `👑 Owner: Tamim`
+      `👑 Owner: 𝑩𝑨𝒀𝑬𝑱𝑰𝑫`
     ];
 
     const spacing = 80;
