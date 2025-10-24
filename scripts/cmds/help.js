@@ -5,8 +5,8 @@ const axios = require("axios");
 module.exports = {
   config: {
     name: "help",
-    version: "4.2",
-    author: "NTKhang | Azad 💥",
+    version: "4.3",
+    author: "BAYEJID 💥",
     countDown: 5,
     role: 0,
     shortDescription: { en: "Modern stylish help menu with image and separators" },
@@ -110,8 +110,8 @@ module.exports = {
     // Sort commands alphabetically
     for (const cat in categories) categories[cat].sort();
 
-    // Header image
-    const headerImageUrl = "https://files.catbox.moe/lgwgib.jpg";
+    // Header image (Updated with your image)
+    const headerImageUrl = "https://files.catbox.moe/eaydp3.jpg";
     const responseImage = await axios.get(headerImageUrl, { responseType: "stream" });
 
     // Build modern styled message with separators
@@ -127,12 +127,13 @@ module.exports = {
 
     msg += "____________________________\n"; // final separator before footer
 
-    // Footer
+    // Footer (Updated owner info)
     const uptime = process.uptime();
     const { days, hours, minutes, seconds } = formatUptime(uptime);
-    msg += `👑 Owner: tamim\n`;
+    msg += `👑 Owner: BAYEJID\n`;
+    msg += `📜 Author: BAYEJID 💥\n`;
     msg += `⏱ Uptime: ${days}d ${hours}h ${minutes}m ${seconds}s\n`;
-    msg += `📜 Use: ${prefix}help [command] for details`;
+    msg += `🧠 Use: ${prefix}help [command] for details`;
 
     // Send everything together
     await api.sendMessage({
