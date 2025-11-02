@@ -66,7 +66,7 @@ module.exports = {
     const infoTexts = [
       `⏳ Uptime: ${uptimeStr}`,
       `📶 Ping: ${ping} ms`,
-      `👑 Owner: 𝑩𝑨𝒀𝑬𝑱𝑰𝑫`
+      `👑 Owner: BAYEJID`
     ];
 
     const spacing = 80;
@@ -81,7 +81,7 @@ module.exports = {
 
     // Send final image
     await message.reply({
-      body: `𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐔𝐒\n• 💤 𝐔𝐩𝐭𝐢𝐦𝐞 : ${uptimeStr}\n• ⚡ 𝐏𝐢𝐧𝐠 : ${ping} ms\n• 👑 𝐎𝐰𝐧𝐞𝐫 : Tamim`,
+      body: `𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐔𝐒\n• 💤 𝐔𝐩𝐭𝐢𝐦𝐞 : ${uptimeStr}\n• ⚡ 𝐏𝐢𝐧𝐠 : ${ping} ms\n• 👑 𝐎𝐰𝐧𝐞𝐫 : BAYEJID`,
       attachment: fs.createReadStream(filePath)
     });
 
