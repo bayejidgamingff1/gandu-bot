@@ -6,8 +6,8 @@ const path = require("path");
 module.exports = {
   config: {
     name: "welcome",
-    version: "2.0",
-    author: "Ew'r Saim",
+    version: "1.0",
+    author: "BAYEJID",
     category: "events"
   },
 
