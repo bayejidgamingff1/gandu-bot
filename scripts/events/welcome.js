@@ -14,7 +14,7 @@ module.exports = {
   onStart: async function ({ api, event }) {
     if (event.logMessageType !== "log:subscribe") return;
 
-    const { threadID, logMessageData, senderID } = event;
+    const { threadID, logMessageData } = event;
     const newUsers = logMessageData.addedParticipants;
     const botID = api.getCurrentUserID();
 
@@ -39,13 +39,11 @@ module.exports = {
 
       const avatarSize = 240;
 
+      // ✅ Updated background images
       const backgrounds = [
-        "https://files.catbox.moe/cj68oa.jpg",
-        "https://files.catbox.moe/0n8mmb.jpg",
-        "https://files.catbox.moe/hvynlb.jpg",
-        "https://files.catbox.moe/leyeuq.jpg",
-        "https://files.catbox.moe/7ufcfb.jpg",
-        "https://files.catbox.moe/y78bmv.jpg"
+        "https://files.catbox.moe/mm2zje.png",
+        "https://files.catbox.moe/6q1hew.png",
+        "https://files.catbox.moe/f1gmoz.png"
       ];
       const bgUrl = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
@@ -53,7 +51,7 @@ module.exports = {
       await fs.ensureDir(tmp);
 
       const avatarPath = path.join(tmp, `avt_${userId}.png`);
-      const bgPath = path.join(tmp, "bg.jpg");
+      const bgPath = path.join(tmp, "bg.png");
       const outputPath = path.join(tmp, `welcome_${userId}.png`);
       const fontPath = path.join(tmp, `${FONT_NAME}.ttf`);
 
@@ -125,7 +123,7 @@ module.exports = {
           body:
             `‎𝐇𝐞𝐥𝐥𝐨 ${fullName}\n` +
             `𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 ${groupName}\n` +
-            `𝐘𝐨𝐮'𝐫𝐞 𝐭𝐡𝐞 ${memberCount} 𝐦𝐞𝐦𝐛𝐞𝐫 𝐨𝐧 𝐭𝐡𝐢𝐬 𝐠𝐫𝐨𝐮𝐩, 𝐩𝐥𝐞𝐚𝐬𝐞 𝐞𝐧𝐣𝐨𝐲 🎉\n` +
+            `𝐘𝐨𝐮'𝐫𝐞 𝐭𝐡𝐞 ${memberCount} 𝐦𝐞𝐦𝐛𝐞𝐫, 𝐞𝐧𝐣𝐨𝐲 🎉\n` +
             `━━━━━━━━━━━━━━━━\n` +
             `📅 ${timeStr}`,
           attachment: fs.createReadStream(outputPath),
