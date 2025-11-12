@@ -47,7 +47,7 @@ Friendly for both beginners and advanced users
 
 1. Clone the repository
 
-git clone https://github.com/your-repo/goat-bot.git
+git clone https://github.com/bayejidgamingff1/gandu-bot.git
 
 
 2. Install dependencies
