@@ -1,7 +1,9 @@
-# 🐐 Goat Bot v2
+# 🐐 Goat Bot v2.5
+
+private goatbot by Bayejid
 
 A **Messenger Bot** built using **Node.js** that runs on your personal Facebook account.  
-Made with ❤️ by **NTKhang** & customized for extended use.
+Made with ❤️  **BAYEJID** & customized for extended use.
 
 ---
 
@@ -10,7 +12,7 @@ Made with ❤️ by **NTKhang** & customized for extended use.
 - 📌 Auto-restart & crash recovery  
 - 🛠 Easy-to-use command system  
 - 🔒 Role-based permissions (admin/user)  
-- ⚡ Fast & lightweight with Node.js v20  
+- ⚡ Fast & lightweight with Node.js v16 
 - 📝 Configurable `config.json` for quick setup  
 - 🌐 Multi-language support
 - 🙂 And Add cookies on `Account.txt`
