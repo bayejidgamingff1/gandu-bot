@@ -4,63 +4,79 @@ const apiUrl = "https://www.noobs-apis.run.place";
 module.exports = {
   config: {
     name: "4k",
-    aliases: ["4k", "ups"],
-    version: "1.7.0",
-    author: "Nazrul",
+    aliases: ["upscale", "hd", "ups"],
+    version: "1.8.0",
+    author: "Nazrul x Refactored",
     role: 0,
     description: "Upscale image by URL or by replying to an image",
     category: "image",
     countDown: 9,
     guide: {
-      en: "{pn} [url] or reply with image"
+      en: "{pn} [image url] or reply to an image"
     }
   },
 
   onStart: async ({ message, event, args }) => {
     const startTime = Date.now();
-    let imgUrl;
+    let imgUrl = null;
 
-    // Check if reply contains image
-    if (event.messageReply?.attachments?.[0]?.type === "photo") {
-      imgUrl = event.messageReply.attachments[0].url;
+    // ১. মেসেজ রিপ্লাই ফিল্টার করে ছবির URL বের করা
+    if (event.messageReply && event.messageReply.attachments && event.messageReply.attachments.length > 0) {
+      const photoAttachment = event.messageReply.attachments.find(att => att.type === "photo");
+      if (photoAttachment) {
+        imgUrl = photoAttachment.url;
+      }
     } 
-    // Or check if user passed an argument (URL)
+    // ২. মেসেজ আর্গুমেন্ট (URL) থেকে চেক করা
     else if (args[0]) {
-      imgUrl = args.join(" ");
+      imgUrl = args[0].trim();
     }
 
-    // If no image found
+    // ৩. ছবি বা URL না থাকলে ওয়ার্নিং
     if (!imgUrl) {
-      return message.reply("⚠️ Please reply to an image or provide an image URL!");
+      return message.reply("⚠️ Please reply to an image or provide a valid image URL!");
     }
 
-    // React duck to show processing started
+    // URL ফরম্যাট চেক (সিম্পল ভ্যালিডেশন)
+    if (!imgUrl.startsWith("http://") && !imgUrl.startsWith("https://")) {
+      return message.reply("❌ Invalid image URL provided!");
+    }
+
+    // প্রসেসিং শুরুর রিঅ্যাকশন
     message.reaction("⏳", event.messageID);
 
     try {
-      // Call upscale API
-      const res = await axios.get(
-        `${apiUrl}/nazrul/upscale?imgUrl=${encodeURIComponent(imgUrl)}`,
-        { responseType: "stream" }
-      );
+      // API কল এবং Stream Response আনা
+      const res = await axios({
+        method: "GET",
+        url: `${apiUrl}/nazrul/upscale?imgUrl=${encodeURIComponent(imgUrl)}`,
+        responseType: "stream",
+        timeout: 60000 // ১ মিনিটের টাইমআউট সেট করা হলো
+      });
 
-      // Success reaction
+      // সাকসেস রিঅ্যাকশন
       message.reaction("✅", event.messageID);
 
       const processTime = ((Date.now() - startTime) / 1000).toFixed(2);
 
-      // Send upscale result
-      message.reply({
+      // রেজাল্ট মেসেজ এবং ছবি সেন্ড
+      return message.reply({
         body: `✨ Premium 4K Upscale Complete!\n📸 Your image is now HD+.\n⏱️ Process Time: ${processTime}s`,
         attachment: res.data
       });
 
     } catch (error) {
-      // Fail reaction
+      // ফেল রিঅ্যাকশন
       message.reaction("❌", event.messageID);
 
-      // Send error message
-      message.reply(`❌ Upscale Failed!\nError: ${error.message}`);
+      console.error("4K Upscale Error:", error.message);
+      
+      let errorMsg = "Failed to upscale image. The API server might be offline or busy.";
+      if (error.response && error.response.status === 404) {
+        errorMsg = "Invalid image URL or the image could not be fetched.";
+      }
+
+      return message.reply(`❌ Upscale Failed!\n${errorMsg}`);
     }
   }
 };
