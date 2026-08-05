@@ -2,43 +2,70 @@ module.exports = {
   config: {
     name: "tag",
     version: "1.0",
-    author: "saidul",
-    countDown: 5,
+    author: "BAYEJID X AI",
+    countDown: 3,
     role: 0,
-    shortDescription: {
-      en: "Tag members by name"
-    },
-    longDescription: {
-      en: "Mention group members by matching name"
-    },
+    shortDescription: "Tag members by name",
+    longDescription: "Tag all members whose name matches the keyword",
     category: "group",
-    guide: {
-      en: "{pn} [name]"
-    }
+    guide: "{pn} <name>"
   },
 
   onStart: async function ({ api, event, args }) {
-    const name = args.join(" ");
-    if (!name) return api.sendMessage("⚠️ Please provide a name to tag.", event.threadID, event.messageID);
+    const { threadID } = event;
 
-    const threadInfo = await api.getThreadInfo(event.threadID);
-    const members = threadInfo.userInfo;
-    const matches = members.filter(user => 
-      user.name && user.name.toLowerCase().includes(name.toLowerCase())
-    );
+    if (!args.length)
+      return api.sendMessage(
+        "❌ | Usage:\n\ntag rakib\ntag md\ntag md rakib",
+        threadID
+      );
 
-    if (matches.length === 0)
-      return api.sendMessage(`❌ No members found matching "${name}".`, event.threadID, event.messageID);
+    const keyword = args.join(" ").toLowerCase();
 
-    const mentions = matches.map(user => ({
-      tag: user.name,
-      id: user.id
-    }));
+    try {
+      const threadInfo = await api.getThreadInfo(threadID);
 
-    const taggedNames = matches.map(user => user.name).join(", ");
-    return api.sendMessage({
-      body: `🔖 Tagging: ${taggedNames}`,
-      mentions
-    }, event.threadID, event.messageID);
+      let mentions = [];
+      let body = "📢 Matching Members:\n\n";
+      let index = 0;
+
+      for (const user of threadInfo.userInfo) {
+        if (
+          user.name &&
+          user.name.toLowerCase().includes(keyword)
+        ) {
+          body += `@${user.name}\n`;
+
+          mentions.push({
+            tag: `@${user.name}`,
+            id: user.id
+          });
+
+          index++;
+        }
+      }
+
+      if (!mentions.length)
+        return api.sendMessage(
+          `❌ | "${args.join(" ")}" নামে কাউকে পাওয়া যায়নি।`,
+          threadID
+        );
+
+      body += `\n✅ Total Tagged: ${mentions.length}`;
+
+      return api.sendMessage(
+        {
+          body,
+          mentions
+        },
+        threadID
+      );
+    } catch (err) {
+      console.error(err);
+      return api.sendMessage(
+        "❌ | সদস্যদের তথ্য আনতে সমস্যা হয়েছে।",
+        threadID
+      );
+    }
   }
 };
